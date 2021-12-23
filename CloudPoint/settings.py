@@ -28,7 +28,7 @@ SECRET_KEY = '^^9&8qvw#-n75_q#46sa+$nbv9(3mb!72)^#t4)y^yi+o0#^)8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["cloudpointweatherapp.herokuapp.com/", "127.0.0.1"]
+ALLOWED_HOSTS = ["cloudpointweatherapp.herokuapp.com/", "127.0.0.1", "*"]
 
 
 # Application definition
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    #'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
     'weather'
 ]
 

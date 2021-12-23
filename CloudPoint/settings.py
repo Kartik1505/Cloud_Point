@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '^^9&8qvw#-n75_q#46sa+$nbv9(3mb!72)^#t4)y^yi+o0#^)8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["cloudpointweatherapp.herokuapp.com/", "127.0.0.1"]
 

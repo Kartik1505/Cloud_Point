@@ -4,6 +4,7 @@ import json
 import requests
 import geocoder
 import calendar
+import socket
 
 apikey = "29a585ea1cd34b1aa8b82100210212"
 baseurl = "http://api.weatherapi.com/v1/forecast.json"
@@ -33,7 +34,7 @@ def data_request(request):
 	else:
 		city = current_location()
 	
-	api_request = requests.get(baseurl+'?'+'key='+apikey+'&q='+ city+'&aqi=yes&days=10')
+	api_request = requests.get(baseurl+'?'+'key='+apikey+'&q='+city+'&aqi=yes&days=10')
 	api = json.loads(api_request.content)
 
 	return api

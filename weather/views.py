@@ -42,91 +42,94 @@ def data_request(request):
 def home(request):
 	api = data_request(request)
 	day_name,month_name = todaydate()
-		
-	city1 = api['location']['name']
-	country = api['location']['country']
-	weather_condition = api['current']['condition']['text']
-	temp_today = api['current']['temp_c']
-	image = api['current']['condition']['icon']
-	time = api['location']['localtime']
-	date = api['location']['localtime'][9:10]
-	hours =  api['forecast']['forecastday'][0]['hour']
-	hours_de = api['forecast']['forecastday'][0]['hour'][14]['time']
-	real_feel = api['current']['feelslike_c']
-	humidity = api['current']['humidity']
-	chance_of_rain = api['forecast']['forecastday'][0]['day']['daily_chance_of_rain']
-	sunrise_time = api['forecast']['forecastday'][1]['astro']['sunrise']
-	sunset_time = api['forecast']['forecastday'][1]['astro']['sunset']
-	pressure = api['current']['pressure_mb'] 
-	wind_speed = api['current']['wind_kph']
-	uv_index = api['forecast']['forecastday'][0]['day']['uv']
-	wind_direction = api['current']['wind_dir']
-	aftedate = api['forecast']['forecastday'][1]['date']
+	context={}
+	try:
+		city1 = api['location']['name']
+		country = api['location']['country']
+		weather_condition = api['current']['condition']['text']
+		temp_today = api['current']['temp_c']
+		image = api['current']['condition']['icon']
+		time = api['location']['localtime']
+		date = api['location']['localtime'][9:10]
+		hours =  api['forecast']['forecastday'][0]['hour']
+		hours_de = api['forecast']['forecastday'][0]['hour'][14]['time']
+		real_feel = api['current']['feelslike_c']
+		humidity = api['current']['humidity']
+		chance_of_rain = api['forecast']['forecastday'][0]['day']['daily_chance_of_rain']
+		sunrise_time = api['forecast']['forecastday'][1]['astro']['sunrise']
+		sunset_time = api['forecast']['forecastday'][1]['astro']['sunset']
+		pressure = api['current']['pressure_mb'] 
+		wind_speed = api['current']['wind_kph']
+		uv_index = api['forecast']['forecastday'][0]['day']['uv']
+		wind_direction = api['current']['wind_dir']
+		aftedate = api['forecast']['forecastday'][1]['date']
 
 
-	hello_list = []
-	time1_list = []
-	temp1_list = []
-	image1_list = []
-	
-	split_time = time.split(" ")
-	new_time = split_time[1]
-	split_time = split_time[1].split(":")
-	count = int(split_time[0])
-	for i in range(0,15):
-		count = count + 1
+		hello_list = []
+		time1_list = []
+		temp1_list = []
+		image1_list = []
 
-		for j in range(0, len(hours)):
+		split_time = time.split(" ")
+		new_time = split_time[1]
+		split_time = split_time[1].split(":")
+		count = int(split_time[0])
+		for i in range(0,15):
+			count = count + 1
 
-			if(count <= 24 and count == j):
-				time1 = api['forecast']['forecastday'][0]['hour'][j]['time']
-				image1 = api['forecast']['forecastday'][0]['hour'][j]['condition']['icon']
-				temp1 = api['forecast']['forecastday'][0]['hour'][j]['temp_c']
+			for j in range(0, len(hours)):
+
+				if(count <= 24 and count == j):
+					time1 = api['forecast']['forecastday'][0]['hour'][j]['time']
+					image1 = api['forecast']['forecastday'][0]['hour'][j]['condition']['icon']
+					temp1 = api['forecast']['forecastday'][0]['hour'][j]['temp_c']
+
+					time1 = time1[11:16]
+					time1_list.append(time1)
+					image1_list.append(image1)
+					temp1_list.append(int(temp1))
+
+			if(count == 24):
+				time1 = api['forecast']['forecastday'][0]['hour'][0]['time']
+				image1 = api['forecast']['forecastday'][0]['hour'][0]['condition']['icon']
+				temp1 = api['forecast']['forecastday'][0]['hour'][0]['temp_c']
 
 				time1 = time1[11:16]
 				time1_list.append(time1)
 				image1_list.append(image1)
 				temp1_list.append(int(temp1))
 
-		if(count == 24):
-			time1 = api['forecast']['forecastday'][0]['hour'][0]['time']
-			image1 = api['forecast']['forecastday'][0]['hour'][0]['condition']['icon']
-			temp1 = api['forecast']['forecastday'][0]['hour'][0]['temp_c']
+				count = 0
+			for x in zip(time1_list,image1_list,temp1_list):
+				pass
 
-			time1 = time1[11:16]
-			time1_list.append(time1)
-			image1_list.append(image1)
-			temp1_list.append(int(temp1))
+			hello_list.append(x)
 
-			count = 0
-		for x in zip(time1_list,image1_list,temp1_list):
-			pass
+		context = {
+			'city' : city1,
+			'coun' : country,
+			'cond' : weather_condition,
+			'temp' : int(temp_today),
+			'imag' : image,
+			'time' : new_time,
+			'days' : day_name,
+			'mont' : month_name,
+			'date' : date,
+			'real_feel' : real_feel,		
+			'humidity' : humidity,
+			'rain' : chance_of_rain,
+			'sunrise' : sunrise_time,
+			'sunset' : sunset_time,
+			'pressure' : int(pressure),
+			'wind' : wind_speed,
+			'uv' : uv_index,
+			'wind_dir' : wind_direction,
+			'hello_list' : hello_list,
 
-		hello_list.append(x)
+		}
 
-	context = {
-		'city' : city1,
-		'coun' : country,
-		'cond' : weather_condition,
-		'temp' : int(temp_today),
-		'imag' : image,
-		'time' : new_time,
-		'days' : day_name,
-		'mont' : month_name,
-		'date' : date,
-		'real_feel' : real_feel,		
-		'humidity' : humidity,
-		'rain' : chance_of_rain,
-		'sunrise' : sunrise_time,
-		'sunset' : sunset_time,
-		'pressure' : int(pressure),
-		'wind' : wind_speed,
-		'uv' : uv_index,
-		'wind_dir' : wind_direction,
-		'hello_list' : hello_list,
-
-	}
-
-	return render(request, 'home.html', context)
+		return render(request, 'home.html', context)
+	except:
+		return render(request, 'invalidInput.html', context)
 
 
